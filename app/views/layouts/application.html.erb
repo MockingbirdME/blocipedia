@@ -13,7 +13,27 @@
     <ul class="nav nav-tabs">
       <li><%= link_to "Flaxipedia", root_path %></li>
       <li><%= link_to "About", about_path%></li>
+      <div class="pull-right user-info">
+        <% if user_signed_in? %>
+          Signed in as: <strong><%= current_user.name %></strong> <br>
+          <div class="gravatar">
+            
+          </div>
+          <div class="pull-right">
+          <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> <br> <%= link_to "Sign Out", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+          </div>
+        <% else %>
+          <%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link'  %> <br>
+          <%= link_to "Sign In", new_user_session_path, :class => 'navbar-link'  %>
+        <% end %>
+      </div>
     </ul>
+    <% flash.each do |key, value| %>
+      <div class="alert alert-<%= key %>">
+        <%= value %>
+      </div>
+    <% end %>
+
 
 <%= yield %>
 </div>
