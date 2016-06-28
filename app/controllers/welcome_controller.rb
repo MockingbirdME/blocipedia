@@ -1,4 +1,10 @@
 class WelcomeController < ApplicationController
+
+  skip_before_action :configure_permitted_parameters
+
+  skip_before_action :authenticate_user!
+
+
   def index
   end
 
