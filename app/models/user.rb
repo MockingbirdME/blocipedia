@@ -18,6 +18,14 @@ class User < ActiveRecord::Base
     update_attribute(:role, new_role)
   end
 
+  def save_subscription(sub)
+    update_attribute(:subscription, sub)
+  end
+
+  def delete_subscription
+    update_attribute(:subscription, nil)
+  end
+
   def avatar_url(size)
     gravatar_id = Digest::MD5::hexdigest(self.email).downcase
     "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"

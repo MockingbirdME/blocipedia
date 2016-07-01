@@ -14,7 +14,7 @@
       <% if @user.standard? %>
         <%= link_to 'Upgrade Membership', new_charge_path, class: 'btn btn-primary'%>
       <% elsif @user.premium? %>
-        <%= link_to 'Cancel Premium Membership', user_user_to_standard_path(@user), class: 'btn btn-default', method: :post%>
+        <%= link_to 'Cancel Premium Membership', charge_cancel_subscription_path(@user), class: 'btn btn-default', method: :post%>
       <%end%>
     <%end%>
   </div>

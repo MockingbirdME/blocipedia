@@ -2,15 +2,15 @@ Rails.application.routes.draw do
 
 
 
-  resources :charges, only: [:new, :create]
+  resources :charges, only: [:new, :create] do
+    post '/cancel_subscription' => 'charges#cancel_subscription', as: :cancel_subscription
+  end
 
   resources :wikis
 
   devise_for :users
 
-  resources :users, only: [:show] do
-    post '/user_to_standard' => 'users#user_to_standard', as: :user_to_standard
-  end
+  resources :users, only: [:show] 
 
   get 'about' => 'welcome#about'
 
