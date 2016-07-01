@@ -8,13 +8,23 @@ class User < ActiveRecord::Base
   has_many :wikis
 
   enum role: [:standard, :premium, :admin]
-  after_initialize :set_default_role, :if => :new_record?
+  after_initialize(:set_default_role, {if: :new_record?})
 
   def set_default_role
     self.role ||= :standard
   end
 
+  def change_user_role(new_role)
+    update_attribute(:role, new_role)
+  end
 
+  def save_subscription(sub)
+    update_attribute(:subscription, sub)
+  end
+
+  def delete_subscription
+    update_attribute(:subscription, nil)
+  end
 
   def avatar_url(size)
     gravatar_id = Digest::MD5::hexdigest(self.email).downcase

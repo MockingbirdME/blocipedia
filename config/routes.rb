@@ -1,8 +1,17 @@
 Rails.application.routes.draw do
 
+
+
+  resources :charges, only: [:new, :create] do
+    post '/cancel_subscription' => 'charges#cancel_subscription', as: :cancel_subscription
+  end
+
   resources :wikis
 
   devise_for :users
+
+  resources :users, only: [:show] 
+
   get 'about' => 'welcome#about'
 
   root 'welcome#index'
