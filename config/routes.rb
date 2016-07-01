@@ -1,8 +1,17 @@
 Rails.application.routes.draw do
 
+
+
+  resources :charges, only: [:new, :create]
+
   resources :wikis
 
   devise_for :users
+
+  resources :users, only: [:show] do
+    post '/user_to_standard' => 'users#user_to_standard', as: :user_to_standard
+  end
+
   get 'about' => 'welcome#about'
 
   root 'welcome#index'

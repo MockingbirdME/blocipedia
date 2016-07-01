@@ -1,0 +1,23 @@
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.user-profile {
+  overflow: hidden;
+}
+
+.user-image-div {
+  width: 33%;
+  float: left !important;
+}
+.user-image {
+  border-radius: 6px;
+}
+
+.user-info-div{
+  float: right !important;
+  width: 66%;
+}
+
+div.user-info-div h2{
+  margin-top: 0px;
+}

@@ -1,0 +1,21 @@
+<br>
+<div class="jumbotron user-profile">
+  <div class="user-image-div">
+    <%= image_tag @user.avatar_url(128), class:"user-image" %>
+  </div>
+  <div class="user-info-div">
+    <h2><%=@user.name%></h2>
+    <h4>Email: <%=@user.email%></h4>
+    <h4>Membership Type: <%=@user.role%></h4>
+  </div>
+  <div class="buttons">
+    <% if @user == current_user %>
+      <%= link_to 'Edit profile', edit_user_registration_path, :class => 'btn btn-success' %>
+      <% if @user.standard? %>
+        <%= link_to 'Upgrade Membership', new_charge_path, class: 'btn btn-primary'%>
+      <% elsif @user.premium? %>
+        <%= link_to 'Cancel Premium Membership', user_user_to_standard_path(@user), class: 'btn btn-default', method: :post%>
+      <%end%>
+    <%end%>
+  </div>
+</div>
