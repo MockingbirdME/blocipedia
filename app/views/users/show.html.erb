@@ -14,7 +14,7 @@
       <% if @user.standard? %>
         <%= link_to 'Upgrade Membership', new_charge_path, class: 'btn btn-primary'%>
       <% elsif @user.premium? %>
-        <%= link_to 'Cancel Premium Membership', charge_cancel_subscription_path(@user), class: 'btn btn-default', method: :post%>
+        <%= link_to 'Cancel Premium Membership', charge_cancel_subscription_path(@user), class: 'btn btn-default', method: :post, data: {confirm: "Canceling your subscription will cause all of your private wikis to become public, are you sure you want to cancel?"}%>
       <%end%>
     <%end%>
   </div>

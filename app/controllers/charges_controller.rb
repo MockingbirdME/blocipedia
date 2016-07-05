@@ -35,6 +35,7 @@ class ChargesController < ApplicationController
     sub.delete
     @user.delete_subscription
     @user.change_user_role(0)
+    @user.cancel_privates
     flash[:notice] = "#{current_user.name}, Your premium membership has been cancled."
     redirect_to user_path(current_user)
   end
