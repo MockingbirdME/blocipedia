@@ -6,11 +6,15 @@ Rails.application.routes.draw do
     post '/cancel_subscription' => 'charges#cancel_subscription', as: :cancel_subscription
   end
 
-  resources :wikis
+  resources :wikis do
+    post '/add_collaborator' => 'wikis#add_collaborator', as: :add_collaborator
+    post '/remove_collaborator' => 'wikis#remove_collaborator', as: :remove_collaborator
+  end
+
 
   devise_for :users
 
-  resources :users, only: [:show] 
+  resources :users, only: [:show]
 
   get 'about' => 'welcome#about'
 
