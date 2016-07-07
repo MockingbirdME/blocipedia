@@ -4,7 +4,7 @@ class WikisController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    @wikis = Wiki.visible_to(current_user)
+    @wikis = (Wiki.private_wikis.my_wikis(current_user)+Wiki.public_wikis).sort
   end
 
   def show

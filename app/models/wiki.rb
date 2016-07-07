@@ -9,7 +9,9 @@ class Wiki < ActiveRecord::Base
 
 
   scope :visible_to, -> (user){user ? where("private is null or private=? or user_id=?",false, user.id).uniq : where(private:false)}
-
+  scope :public_wikis, -> {where(private:false)}
+  scope :private_wikis, -> {where(private:true)}
+  scope :my_wikis, -> (user){where(user_id:user)}
   default_scope {order('lower(title)')}
 
   def set_default_private
