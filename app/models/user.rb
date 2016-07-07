@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
 
 
-  has_many :wikis
+  has_many :created_wikis, class_name: "Wiki", foreign_key: "user_id"
+  has_many :collaborations
+  has_many :collaborating_wikis, through: :collaborations, source: :wiki
 
   enum role: [:standard, :premium, :admin]
   after_initialize(:set_default_role, {if: :new_record?})

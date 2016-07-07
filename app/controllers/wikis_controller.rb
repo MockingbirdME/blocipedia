@@ -4,7 +4,8 @@ class WikisController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    @wikis = (Wiki.private_wikis.my_wikis(current_user)+Wiki.public_wikis).sort
+    @wikis = policy_scope(Wiki)
+  # @wikis = (Wiki.private_wikis.my_wikis(current_user)+Wiki.public_wikis).sort
   end
 
   def show
@@ -59,6 +60,19 @@ class WikisController < ApplicationController
     end
   end
 
+  def add_collaborator
+    @wiki = Wiki.find(params[:wiki_id])
+    @user = User.find(params[:user_id])
+    @wiki.collaborators << @user
+    render :edit
+  end
+
+  def remove_collaborator
+    @wiki = Wiki.find(params[:wiki_id])
+    @user = User.find(params[:user_id])
+    @wiki.collaborations.find_by(user_id: @user.id).delete
+    render :edit
+  end
 
   private
     def wiki_params

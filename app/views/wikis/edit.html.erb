@@ -1,2 +1,30 @@
 <h1>Edit Wiki</h1>
 <%=render partial: 'form', locals:{wiki: @wiki}%>
+
+<% if @wiki.private? && (@wiki.user_id == current_user.id) %>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#collaborators_modal">Add collaborators</button>
+<%end%>
+
+
+<div id="collaborators_modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-body">
+      <% User.all.each do |u| %>
+        <% if u.id != current_user.id %>
+          <div>
+            <% if @wiki.collaborators.include?(u) %>
+              <%= "#{u.name}(#{u.id})" %>
+              <%= link_to "remove as collaborator", wiki_remove_collaborator_path(@wiki, user_id: u.id), class: 'btn btn-danger', method: :post%>
+            <%else%>
+              <%= "#{u.name}(#{u.id})" %>
+              <%= button_to "add as collaborator", wiki_add_collaborator_path(wiki_id:@wiki.id, user_id:u.id), class: 'btn btn-primary'%>
+            <%end%>
+          </div>
+        <%end%>
+      <%end%>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>

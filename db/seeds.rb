@@ -8,7 +8,7 @@ require 'random_data'
       role: 0
     )
   end
-
+  User.create!(name: 'devon', email: 'devon.henegar@gmail.com', password: 'rappecep', role: 1)
   users = User.all
 
   5.times do
