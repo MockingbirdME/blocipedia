@@ -1,4 +1,8 @@
 class Wiki < ActiveRecord::Base
+
+  extend FriendlyId
+  friendly_id :title, use: [:slugged, :finders]
+
   belongs_to :user
   has_many :collaborations
   has_many :collaborators, through: :collaborations, source: :user
@@ -8,7 +12,7 @@ class Wiki < ActiveRecord::Base
   validates :title, length: {minimum: 2}, presence: true
   validates :body, length: {minimum: 10}, presence: true
   validates :user, presence: true
-
+  validates :slug, presence: true
 
   scope :visible_to, -> (user){user ? where("private is null or private=? or user_id=?",false, user.id).uniq : where(private:false)}
   scope :public_wikis, -> {where(private:false)}
