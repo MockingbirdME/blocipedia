@@ -17,7 +17,7 @@
               <%= link_to "remove as collaborator", wiki_remove_collaborator_path(@wiki, user_id: u.id), class: 'btn btn-danger', method: :post%>
             <%else%>
               <%= "#{u.name}(#{u.id})" %>
-              <%= button_to "add as collaborator", wiki_add_collaborator_path(wiki_id:@wiki.id, user_id:u.id), class: 'btn btn-primary'%>
+              <%= link_to "add as collaborator", wiki_add_collaborator_path(@wiki, user_id:u.id), class: 'btn btn-primary', method: :post%>
             <%end%>
           </div>
         <%end%>

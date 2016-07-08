@@ -64,14 +64,14 @@ class WikisController < ApplicationController
     @wiki = Wiki.find(params[:wiki_id])
     @user = User.find(params[:user_id])
     @wiki.collaborators << @user
-    render :edit
+    redirect_to :back
   end
 
   def remove_collaborator
     @wiki = Wiki.find(params[:wiki_id])
     @user = User.find(params[:user_id])
     @wiki.collaborations.find_by(user_id: @user.id).delete
-    render :edit
+    redirect_to :back
   end
 
   private
