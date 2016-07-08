@@ -25,7 +25,6 @@ class Wiki < ActiveRecord::Base
   end
 
   def set_as_public
-    puts "hello"
     update_attribute(:private, false)
   end
 end

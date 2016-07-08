@@ -32,7 +32,6 @@ class User < ActiveRecord::Base
   end
 
   def cancel_privates
-    puts "hi there"
     self.wikis.each { |wiki| puts wiki.set_as_public }
   end
 
