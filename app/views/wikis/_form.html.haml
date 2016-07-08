@@ -1,0 +1,22 @@
+= form_for [wiki] do |f|
+  -if wiki.errors.any?
+    %div.alert.alert-danger
+      %h4
+        = pluralize(wiki.errors.count, "error")
+      %ul
+        -wiki.errors.full_messages.each do |msg|
+          %li
+            =msg
+  %div.form-group
+    = f.label :title
+    = f.text_field :title, class: "form-control",  autofocus: true, placeholder: "Enter Wiki Name"
+  %div.form-group
+    = f.label :body
+    = f.text_area :body, rows: 12, class: "form-control", placeholder: "Enter Wiki Info"
+  -if current_user.admin? || current_user.premium?
+    %div.form-group
+      = f.label :private, class: 'checkbox' do
+        = f.check_box :private
+        Private wiki
+  %div.form-group
+    = f.submit "Save", class: 'btn btn-success'

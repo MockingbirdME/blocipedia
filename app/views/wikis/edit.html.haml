@@ -1,0 +1,22 @@
+%h1 Edit Wiki
+= render partial: 'form', locals:{wiki: @wiki}
+
+- if @wiki.private? && (@wiki.user_id == current_user.id)
+  %button.btn.btn-primary{:type => "button", :data => {:toggle => "modal", :target => "#collaborators_modal"}} Collaborators
+
+
+
+%div#collaborators_modal.modal
+  %div.modal-content
+    %div.modal-body
+      - User.all.each do |u|
+        -if u.id != current_user.id
+          %div
+            - if @wiki.collaborators.include?(u)
+              = "#{u.name}(#{u.id})"
+              = link_to "remove as collaborator", wiki_remove_collaborator_path(@wiki, user_id: u.id), class: 'btn btn-danger', method: :post
+            - else
+              = "#{u.name}(#{u.id})"
+              = link_to "add as collaborator", wiki_add_collaborator_path(@wiki, user_id:u.id), class: 'btn btn-primary', method: :post
+    %div.modal-footer
+      %button.btn.btn-secondary{ :type => 'button', :data => {:dismiss => "modal"}} Close
