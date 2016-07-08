@@ -16,10 +16,14 @@ end
 group :development, :test do
   gem 'byebug'
   gem 'spring'
-  gem 'rspec-rails'
-  gem 'shoulda'
   gem 'faker'
   gem 'factory_girl_rails'
+end
+
+group :test do
+  gem 'rspec-rails'
+  gem 'shoulda'
+  gem 'simplecov'
 end
 
 
@@ -36,3 +40,4 @@ gem 'pundit'
 gem 'stripe'
 gem 'redcarpet'
 gem 'friendly_id', '~> 5.1.0'
+gem 'haml'
