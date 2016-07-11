@@ -2,11 +2,12 @@ require 'rails_helper'
 
 RSpec.describe WikisController, type: :controller do
 
-  let(:user){User.create!(name: "user", email: "user@user.user", password: "useruser")}
-  let(:wiki) {Wiki.create!(title: "my wiki", body: "my wiki text", private: false, user: user)}
+  let(:user){User.create!(name: RandomData.random_name, email: RandomData.random_email, password: "useruser", role: 1)}
+  let(:second_user){User.create!(name: RandomData.random_name, email: RandomData.random_email, password: "useruser", role: 0)}
+  let(:wiki) {Wiki.create!(id: 1,title: "my wiki", body: "my wiki text", private: false, user: user)}
+  let(:private_wiki){Wiki.create!(id: 2, title: "private wiki", body: "private wiki text", private: true, user: user)}
 
-
-  context "guest doing CRUG on wiki" do
+  context "guest doing CRUD on wiki" do
     describe "GET index" do
       it "returns http success" do
         get :index
@@ -138,14 +139,63 @@ RSpec.describe WikisController, type: :controller do
         get :edit, {id: wiki.id}
         expect(response).to have_http_status(:success)
       end
+      it "renders edit view" do
+        get :edit, id:wiki.id
+        expect(response).to render_template :edit
+      end
+      it "assigns wiki to be updated to @wiki" do
+        get :edit, id:wiki.id
+        wiki_inst = assigns(:wiki)
+        expect(wiki_inst.id).to eq wiki.id
+        expect(wiki_inst.title).to eq wiki.title
+        expect(wiki_inst.body).to eq wiki.body
+      end
     end
 
-    describe "GET #update" do
-
+    describe "Put update" do
+      it "returns http redirect" do
+        new_title = RandomData.random_name
+        new_body = RandomData.random_paragraph
+        put :update, id: wiki.id, wiki:{title:new_title, body:new_body}
+        expect(response).to redirect_to(wiki)
+      end
+      it "updates wiki inforamtion" do
+        new_title = RandomData.random_name
+        new_body = RandomData.random_paragraph
+        put :update, id: wiki.id, wiki:{title:new_title, body:new_body}
+        updated_wiki = assigns(:wiki)
+        expect(updated_wiki.id).to eq wiki.id
+        expect(updated_wiki.title).to eq wiki.title
+        expect(updated_wiki.body).to eq wiki.body
+      end
     end
 
-    describe "GET #destroy" do
-
+    describe "DELETE destroy" do
+      it "deletes the wiki" do
+        delete :destroy, id:wiki.id
+        count = Wiki.where({id:wiki.id}).size
+        expect(count).to eq 0
+      end
+      it "redirects to wiki index" do
+        delete :destroy, id:wiki.id
+        expect(response).to redirect_to(wikis_path)
+      end
+    end
+  end
+  context "premium member modifying collaborators" do
+    describe "add collaborator" do
+      it "adds user as collaborator to private wiki" do
+        post :add_collaborator, wiki_id:private_wiki.id, user:second_user
+        w = Wiki.find_by(id:2)
+        expect(w.collaborators.count).to eq 1
+      end
+    end
+    describe "remove collaborator" do
+      it "removes user as collaborator to private wiki" do
+        post :remove_collaborator,wiki_id:private_wiki.id, wiki:private_wiki, user:second_user
+        w = Wiki.find_by(id:2)
+        expect(w.collaborators.count).to eq 0
+      end
     end
   end
 end

@@ -33,9 +33,7 @@ class ChargesController < ApplicationController
     @user = current_user
     sub = Stripe::Subscription.retrieve(@user.subscription)
     sub.delete
-    @user.delete_subscription
-    @user.change_user_role(0)
-    @user.cancel_privates
+    @user.downgrade
     flash[:notice] = "#{current_user.name}, Your premium membership has been cancled."
     redirect_to user_path(current_user)
   end
