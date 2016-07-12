@@ -14,6 +14,7 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to have_http_status(:success)
       end
       it "assigns [wiki] to @wikis" do
+        wiki
         get :index
         expect(assigns(:wikis)).to eq([wiki])
       end
@@ -84,6 +85,7 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to have_http_status(:success)
       end
       it "assigns [wiki] to @wikis" do
+        wiki
         get :index
         expect(assigns(:wikis)).to eq([wiki])
       end
@@ -165,8 +167,10 @@ RSpec.describe WikisController, type: :controller do
         put :update, id: wiki.id, wiki:{title:new_title, body:new_body}
         updated_wiki = assigns(:wiki)
         expect(updated_wiki.id).to eq wiki.id
-        expect(updated_wiki.title).to eq wiki.title
-        expect(updated_wiki.body).to eq wiki.body
+        expect(updated_wiki.title).to_not eq wiki.title
+        expect(updated_wiki.title).to eq new_title
+        expect(updated_wiki.body).to_not eq wiki.body
+        expect(updated_wiki.body).to eq new_body
       end
     end
 
@@ -185,6 +189,7 @@ RSpec.describe WikisController, type: :controller do
   context "premium member modifying collaborators" do
     describe "add collaborator" do
       it "adds user as collaborator to private wiki" do
+        wiki; user; private_wiki; second_user
         post :add_collaborator, wiki_id:private_wiki.id, user:second_user
         w = Wiki.find_by(id:2)
         expect(w.collaborators.count).to eq 1
