@@ -187,17 +187,21 @@ RSpec.describe WikisController, type: :controller do
     end
   end
   context "premium member modifying collaborators" do
+    before :each do
+      sign_in user
+    end
     describe "add collaborator" do
-      it "adds user as collaborator to private wiki" do
-        wiki; user; private_wiki; second_user
-        post :add_collaborator, wiki_id:private_wiki.id, user:second_user
-        w = Wiki.find_by(id:2)
+      it "adds second user as collaborator to private wiki" do
+        post :add_collaborator, wiki_id:private_wiki.id, user_id:second_user.id, id: 2
+        w = Wiki.find_by(id: private_wiki.id)
+        expect(w.user).to eq user
         expect(w.collaborators.count).to eq 1
       end
     end
     describe "remove collaborator" do
       it "removes user as collaborator to private wiki" do
-        post :remove_collaborator,wiki_id:private_wiki.id, wiki:private_wiki, user:second_user
+        private_wiki.collaborators  << second_user
+        post :remove_collaborator,wiki_id:private_wiki.id, wiki:private_wiki, user_id:second_user.id
         w = Wiki.find_by(id:2)
         expect(w.collaborators.count).to eq 0
       end
